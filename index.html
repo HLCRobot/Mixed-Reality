@@ -24,16 +24,18 @@
 
         .energy-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(4, 1fr); /* 4-column layout */
+            gap: 10px; /* Reduced gap for better mobile fit */
+            margin-bottom: 30px;
+            overflow-x: auto; /* Allow horizontal scrolling on small screens */
         }
 
         .energy-slot {
             background: #ffffff;
             border: 3px dashed #81c784;
-            border-radius: 15px;
-            aspect-ratio: 1;
+            border-radius: 10px;
+            aspect-ratio: 1/2; /* 1:2 aspect ratio (width:height) */
+            min-width: 80px; /* Minimum width for visibility */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -41,7 +43,7 @@
         }
 
         .energy-icon {
-            width: 65%;
+            width: 80%; /* Larger icon size */
             height: auto;
             display: none;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
@@ -140,9 +142,9 @@
     <div id="instructionModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2 style="color: #1b5e20; margin-bottom: 15px;">Hint</h2>
+            <h2 style="color: #1b5e20; margin-bottom: 15px;">GAME START</h2>
             <p style="line-height: 1.5; color: #444;">
-                Please find the wooden table and chair next to the parking lot to start the game.
+                Please locate the wooden table and chairs near the parking lot to begin your mission.
             </p>
         </div>
     </div>
@@ -163,16 +165,6 @@
                 closeModal();
             }
         }
-
-        /* Energy collection system (example activation code)
-        function collectEnergy(element) {
-            const icon = document.getElementById(`${element}-slot`).querySelector('.energy-icon');
-            icon.style.display = 'block';
-        }
-        
-        // Simulate collecting water energy
-        collectEnergy('water');
-        */
     </script>
 </body>
 </html>
