@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Restorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        
+        /* 新增迷宫游戏样式 */
+        #mazeGame {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+        }
+
+        #mazeContainer {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 50px auto;
+            background: #f0f8ff;
+            border-radius: 8px;
+        }
+
+        #mazeCanvas {
+            border-radius: 6px;
+        }
+
+        .game-info {
+            color: white;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .water-glow {
+            animation: waterGlow 1.5s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes waterGlow {
+            0% { box-shadow: 0 0 10px rgba(173, 216, 230, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(173, 216, 230, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(173, 216, 230, 0.5); }
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #e8f5e9;
+            min-height: 100vh;
+        }
+
+        .game-title {
+            text-align: center;
+            color: #1b5e20;
+            margin: 20px 0 40px;
+            font-size: 2.8rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 0 0 15px;
+            font-size: 1.6rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            background-image: linear-gradient(to right, #1b1bd5, #ff0000, #ffff00, #008000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 100%;
+        }
+
+        .energy-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .mini-game-buttons {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .mini-game-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: none;
+            aspect-ratio: 2/1;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .water-btn { background-color: lightblue; }
+        .fire-btn { background-color: #ff4500; }
+        .earth-btn { background-color: #cd853f; }
+        .wind-btn { background-color: #006400; }
+
+        .mini-game-btn:hover {
+            transform: scale(1.03);
+        }
+
+
+        .energy-slot {
+            background: #ffffff;
+            border: 3px dashed #81c784;
+            border-radius: 10px;
+            aspect-ratio: 1/1;
+            min-width: 80px;
+            display: flex;
+            overflow: hidden;
+            box-sizing: border-box;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .energy-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) opacity(60%);
+            transition: filter 0.3s ease;
+            padding: 5px;
+        }
+
+        .energy-icon.active {
+            filter: none !important;
+            animation: pulse 1s ease-in-out, waterGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* MOD: 给获取到水能的图标外围添加细微光环特效 */
+        .energy-icon.active::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 2px solid rgba(173, 216, 230, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(173, 216, 230, 0.7);
+            pointer-events: none;
+        }
+
+        .game-map {
+            width: 100%;
+            border: 3px solid #1b5e20;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .start-button {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(145deg, #1b5e20, #2e7d32);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .start-button:hover {
+            transform: scale(1.02);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 20vh auto;
+            padding: 25px;
+            width: 85%;
+            border-radius: 20px;
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-button {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: #333;
+        }
+
+        .clues-container {
+            display: none;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #1b5e20;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .clue {
+            color: #1b5e20;
+            margin: 10px 0;
+            font-size: 1rem;
+            line-height: 1.4;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="game-title">ECOLOGICAL RESTORER</h1>
+    <h2 class="section-title">Please activate clean energy (water, fire, earth, wind) and purify the parking lot</h2>
+    <div class="energy-container">
+        <div class="energy-slot">
+            <img src="water-icon.jpg" class="energy-icon water-icon" alt="Water Energy">
+        </div>
+        <div class="energy-slot">
+            <img src="fire-icon.jpg" class="energy-icon" alt="Fire Energy">
+        </div>
+        <div class="energy-slot">
+            <img src="earth-icon.jpg" class="energy-icon" alt="Earth Energy">
+        </div>
+        <div class="energy-slot">
+            <img src="wind-icon.jpg" class="energy-icon" alt="Wind Energy">
+        </div>
+    </div>
+
+    <div class="mini-game-buttons">
+        <button class="mini-game-btn water-btn">mini-game(water)</button>
+        <button class="mini-game-btn fire-btn">mini-game(fire)</button>
+        <button class="mini-game-btn earth-btn">mini-game(earth)</button>
+        <button class="mini-game-btn wind-btn">mini-game(wind)</button>
+    </div>
+
+    <h2 class="section-title">Game map</h2>
+    <img src="game-map.jpg" class="game-map" alt="Game Area Map">
+
+    <div class="clues-container">
+        <p id="clue1" class="clue">Clue 1: The first clean energy is located at the lamppost closest to the trash disposal area.</p>
+        <p id="clue2" class="clue">Clue 2: The second clean energy is located at the first pole east of the first clean energy.</p>
+        <p id="clue3" class="clue">Clue 3: The third clean energy is located at the first pole southeast of the second clean energy.</p>
+        <p id="clue4" class="clue">Clue 4: The fourth clean energy is located at the first pole southeast of the third clean energy.</p>
+        <p id="clue5" class="clue">Clue 5: Go to the grassland in the bottom right corner (southeast) of the map to start the purification ritual.</p>
+    </div>
+
+    <button class="start-button" onclick="showInstruction()">Start the game</button>
+
+    <div id="instructionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2 style="color: #1b5e20; margin-bottom: 15px;">CLUE</h2>
+            <p style="line-height: 1.5; color: #444;">
+                Please go to the wooden tables and chairs next to the parking lot.
+            </p>
+        </div>
+    </div>
+
+    <!-- 新增迷宫游戏结构 -->
+    <div id="mazeGame">
+        <div class="game-info">Tilt the phone to guide the water droplet to the exit!</div>
+        <div id="mazeContainer">
+            <canvas id="mazeCanvas" width="300" height="300"></canvas>
+        </div>
+        <div class="game-info" id="gameResult"></div>
+    </div>
+
+    <script>
+        const TARGET_LAT = 52.954928;
+        const TARGET_LON = -1.190927;
+        const TARGET1_LAT = 52.955028;  // 第一个灯杆坐标
+        const TARGET1_LON = -1.190765;
+        const ACTIVATION_RADIUS = 5; // 5米范围
+        let watchId = null;
+
+        // 迷宫游戏逻辑
+        let maze = [
+            [1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,1,0,0,0,0,1],
+            [1,1,1,0,1,0,1,1,0,1],
+            [1,0,0,0,0,0,0,1,0,1],
+            [1,0,1,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,1,0,1],
+            [1,1,1,1,1,0,1,1,0,1],
+            [1,0,0,0,0,0,0,0,0,1],
+            [1,0,1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,1,1,1]
+        ];
+        let player = { x: 4.5, y: 4.5, size: 12 };
+        let lastUpdate = 0;
+        const CELL_SIZE = 30;
+
+        function showInstruction() {
+            document.getElementById('instructionModal').style.display = "block";
+            startGeoMonitoring();
+        }
+
+        function closeModal() {
+            document.getElementById('instructionModal').style.display = "none";
+        }
+
+        function startGeoMonitoring() {
+            if (navigator.geolocation) {
+                watchId = navigator.geolocation.watchPosition(
+                    position => checkPosition(position),
+                    error => console.error('定位错误:', error),
+                    { enableHighAccuracy: true, maximumAge: 10000 }
+                );
+            }
+        }
+
+        function checkPosition(position) {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+            
+            // 检查木质桌椅区域
+            const tableDistance = calculateDistance(userLat, userLon, TARGET_LAT, TARGET_LON);
+            if (tableDistance <= ACTIVATION_RADIUS) {
+                document.querySelector('.clues-container').style.display = 'block';
+                document.getElementById('clue1').style.display = 'block';
+            }
+
+            // 检查第一个灯杆区域
+            const poleDistance = calculateDistance(userLat, userLon, TARGET1_LAT, TARGET1_LON);
+            if (poleDistance <= ACTIVATION_RADIUS) {
+                document.querySelector('.mini-game-buttons').style.display = 'grid';
+                document.querySelector('.water-btn').style.display = 'block';
+            }
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371e3;
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            
+            return R * c;
+        }
+
+        function initMaze() {
+            const canvas = document.getElementById('mazeCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 绘制迷宫
+            ctx.fillStyle = '#30475e';
+            maze.forEach((row, y) => {
+                row.forEach((cell, x) => {
+                    if (cell === 1) {
+                        ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    }
+                });
+            });
+
+            // 绘制出口（左下角）
+            ctx.fillStyle = '#8ac6d1';
+            ctx.fillRect(1 * CELL_SIZE, 8 * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+
+        function updatePosition(beta, gamma) {
+            const now = Date.now();
+            if (now - lastUpdate < 30) return; // 提高更新频率
+            
+            const dx = gamma * 0.03;  // 降低灵敏度
+            const dy = beta * 0.03;
+
+            const newX = player.x + dx;
+            const newY = player.y + dy;
+
+            // 改进的碰撞检测
+            if (!checkCollision(newX, newY)) {
+                player.x = Math.max(1.2, Math.min(8.8, newX)); // 增加边界缓冲
+                player.y = Math.max(1.2, Math.min(8.8, newY));
+            }
+
+            drawPlayer();
+            checkExit();
+            lastUpdate = now;
+        }
+
+        function checkCollision(x, y) {
+            // 精确到像素级的碰撞检测
+            const radius = player.size / 2;
+            const checkPoints = [
+                [x - radius/CELL_SIZE, y],          // 左
+                [x + radius/CELL_SIZE, y],         // 右
+                [x, y - radius/CELL_SIZE],         // 上
+                [x, y + radius/CELL_SIZE]          // 下
+            ];
+
+            return checkPoints.some(([px, py]) => {
+                const cellX = Math.floor(px);
+                const cellY = Math.floor(py);
+                return maze[cellY][cellX] === 1;
+            });
+        }
+
+        function drawPlayer() {
+            const canvas = document.getElementById('mazeCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            initMaze();
+            
+            // 绘制水滴
+            ctx.beginPath();
+            ctx.arc(
+                player.x * CELL_SIZE,
+                player.y * CELL_SIZE,
+                player.size, 0, Math.PI * 2
+            );
+            ctx.fillStyle = 'rgba(173, 216, 230, 0.8)';
+            ctx.fill();
+        }
+
+        function checkExit() {
+            // 精确的出口检测
+            const exitX = 1;
+            const exitY = 8;
+            if (player.x >= exitX + 0.2 && player.x <= exitX + 0.8 &&
+                player.y >= exitY + 0.2 && player.y <= exitY + 0.8) {
+                document.getElementById('gameResult').textContent = "Successfully obtained water energy!";
+                setTimeout(() => {
+                    document.getElementById('mazeGame').style.display = 'none';
+                    unlockWaterEnergy();
+                    window.removeEventListener('deviceorientation', updatePosition);
+                }, 500);
+            }
+        }
+
+        function unlockWaterEnergy() {
+            document.querySelector('.water-btn').disabled = true;
+            document.querySelector('.water-icon').classList.add('active');
+        }
+
+        document.querySelector('.water-btn').addEventListener('click', () => {
+            document.getElementById('mazeGame').style.display = 'block';
+            player = { x: 4.5, y: 4.5, size: 12 }; // 重置玩家位置
+            initMaze();
+            drawPlayer();
+
+            if (typeof DeviceOrientationEvent !== 'undefined' && 
+                typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permission => {
+                        if (permission === 'granted') {
+                            window.addEventListener('deviceorientation', (e) => {
+                                updatePosition(e.beta, e.gamma);
+                            });
+                        }
+                    });
+            } else {
+                window.addEventListener('deviceorientation', (e) => {
+                    updatePosition(e.beta, e.gamma);
+                });
+            }
+        });
+
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('instructionModal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
