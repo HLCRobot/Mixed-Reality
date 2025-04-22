@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <style>
         
-        /* 新增迷宫游戏样式 */
         #mazeGame {
             display: none;
             position: fixed;
@@ -82,6 +81,15 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin: 20px 0;
+        }
+
+        .jigsaw-fire {
+            display: none;
+            margin: 20px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .mini-game-btn {
@@ -221,28 +229,35 @@
 </head>
 <body>
     <h1 class="game-title">ECOLOGICAL RESTORER</h1>
-    <h2 class="section-title">Please activate clean energy (water, fire, earth, wind)</h2>
+    <h2 class="section-title">Please complete mini-games to activate clean energy(water, fire, earth, wind)</h2>
     <div class="energy-container">
         <div class="energy-slot">
             <img src="water-icon.jpg" class="energy-icon water-icon" alt="Water Energy">
         </div>
         <div class="energy-slot">
-            <img src="fire-icon.jpg" class="energy-icon" alt="Fire Energy">
+            <img src="fire-icon.jpg" class="energy-icon fire-icon" alt="Fire Energy">
         </div>
         <div class="energy-slot">
-            <img src="earth-icon.jpg" class="energy-icon" alt="Earth Energy">
+            <img src="earth-icon.jpg" class="energy-icon earth-icon" alt="Earth Energy">
         </div>
         <div class="energy-slot">
-            <img src="wind-icon.jpg" class="energy-icon" alt="Wind Energy">
+            <img src="wind-icon.jpg" class="energy-icon wind-icon" alt="Wind Energy">
         </div>
     </div>
 
     <div class="mini-game-buttons">
-        <button class="mini-game-btn water-btn">mini-game(water)</button>
-        <button class="mini-game-btn fire-btn">mini-game(fire)</button>
-        <button class="mini-game-btn earth-btn">mini-game(earth)</button>
-        <button class="mini-game-btn wind-btn">mini-game(wind)</button>
+        <button class="mini-game-btn water-btn">water</button>
+        <button class="mini-game-btn fire-btn">fire</button>
+        <button class="mini-game-btn earth-btn">earth</button>
+        <button class="mini-game-btn wind-btn">wind</button>
     </div>
+
+    <div class="jigsaw-fire">
+       <h3>Please complete the puzzle to activate fire clean energy</h3>
+       <iframe src="https://www.jigsawplanet.com/alylh15?rc=uplay&amp;view=iframe&amp;bgcolor=0x23d1b4" style="width:100%;height:600px" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    
 
     <h2 class="section-title">Game map</h2>
     <img src="game-map.jpg" class="game-map" alt="Game Area Map">
@@ -267,7 +282,6 @@
         </div>
     </div>
 
-    <!-- 新增迷宫游戏结构 -->
     <div id="mazeGame">
         <div class="game-info">Tilt the phone to guide the water droplet to the exit!</div>
         <div id="mazeContainer">
@@ -332,7 +346,6 @@
             const userLat = position.coords.latitude;
             const userLon = position.coords.longitude;
             
-            // 检查木质桌椅区
             const tableDistance = calculateDistance(userLat, userLon, TARGET_LAT, TARGET_LON);
             if (tableDistance <= ACTIVATION_RADIUS) {
                 document.querySelector('.clues-container').style.display = 'block';
@@ -490,6 +503,22 @@
                 window.addEventListener('deviceorientation', (e) => {
                     updatePosition(e.beta, e.gamma);
                 });
+            }
+        });
+
+        document.querySelector('.fire-btn').addEventListener('click', function() {
+            document.querySelector('.jigsaw-fire').style.display = 'block';
+        });
+      
+        // 监听来自拼图网站的消息
+        window.addEventListener('message', function(e) {
+            // 确保消息来自jigsawplanet
+            if (e.origin !== 'https://www.jigsawplanet.com/?rc=play&view=iframe&bgcolor=0x23d1b4&pid=0a2c25e75eac') return;
+            // 检测包含"Congratulations"的字符串
+            if (typeof e.data === 'string' && e.data.includes('Congratulations')) {
+                document.querySelector('.jigsaw-fire').style.display = 'none';
+                document.querySelector('.fire-icon').classList.add('active');
+                document.getElementById('clue3').style.display = 'block';
             }
         });
 
