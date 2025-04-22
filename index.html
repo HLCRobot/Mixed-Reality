@@ -297,7 +297,7 @@
             [1,0,1,1,1,1,1,1,1,1],
             [1,1,1,1,1,1,1,1,1,1]
         ];
-        let player = { x: 4.5, y: 4.5, size: 12 };
+        let player = { x: 1.5, y: 1.5, size: 12 };
         let lastUpdate = 0;
         const CELL_SIZE = 30;
 
@@ -451,7 +451,7 @@
 
         document.querySelector('.water-btn').addEventListener('click', () => {
             document.getElementById('mazeGame').style.display = 'block';
-            player = { x: 4.5, y: 4.5, size: 12 }; // 重置玩家位置
+            player = { x: 1.5, y: 1.5, size: 12 }; // 重置玩家位置
             initMaze();
             drawPlayer();
 
