@@ -279,8 +279,10 @@
     <script>
         const TARGET_LAT = 52.954928;
         const TARGET_LON = -1.190927;
-        const TARGET1_LAT = 52.955028;  // 第一个灯杆坐标
+        const TARGET1_LAT = 52.955028;  
         const TARGET1_LON = -1.190765;
+        const TARGET2_LAT = 52.955012;  // 第二个灯杆坐标
+        const TARGET2_LON = -1.190509;
         const ACTIVATION_RADIUS = 5; // 5米范围
         let watchId = null;
 
@@ -331,12 +333,12 @@
                 document.getElementById('clue1').style.display = 'block';
             }
 
-            // 检查第一灯杆区
-            const poleDistance = calculateDistance(userLat, userLon, TARGET1_LAT, TARGET1_LON);
-            if (poleDistance <= ACTIVATION_RADIUS) {
-                document.querySelector('.mini-game-buttons').style.display = 'grid';
-                document.querySelector('.water-btn').style.display = 'block';
-            }
+            const pole1Distance = calculateDistance(userLat, userLon, TARGET1_LAT, TARGET1_LON);
+            const pole2Distance = calculateDistance(userLat, userLon, TARGET2_LAT, TARGET2_LON);
+            document.querySelector('.mini-game-buttons').style.display = (pole1Distance <= ACTIVATION_RADIUS || pole2Distance <= ACTIVATION_RADIUS) ? 'grid' : 'none';
+            document.querySelector('.water-btn').style.display = pole1Distance <= ACTIVATION_RADIUS ? 'block' : 'none';
+            document.querySelector('.fire-btn').style.display = pole2Distance <= ACTIVATION_RADIUS ? 'block' : 'none';
+            
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
