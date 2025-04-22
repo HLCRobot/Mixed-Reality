@@ -283,6 +283,12 @@
         const TARGET1_LON = -1.190765;
         const TARGET2_LAT = 52.955012;  // 第二个灯杆坐标
         const TARGET2_LON = -1.190509;
+        const TARGET3_LAT = 52.954965; // 第三个灯杆坐标
+        const TARGET3_LON = -1.190255;
+        const TARGET4_LAT = 52.954898; // 第四个灯杆坐标
+        const TARGET4_LON = -1.190010;
+        const TARGET5_LAT = 52.954679;  // 草地坐标
+        const TARGET5_LON = -1.189828;
         const ACTIVATION_RADIUS = 5; // 5米范围
         let watchId = null;
 
@@ -335,10 +341,22 @@
 
             const pole1Distance = calculateDistance(userLat, userLon, TARGET1_LAT, TARGET1_LON);
             const pole2Distance = calculateDistance(userLat, userLon, TARGET2_LAT, TARGET2_LON);
-            document.querySelector('.mini-game-buttons').style.display = (pole1Distance <= ACTIVATION_RADIUS || pole2Distance <= ACTIVATION_RADIUS) ? 'grid' : 'none';
-            document.querySelector('.water-btn').style.display = pole1Distance <= ACTIVATION_RADIUS ? 'block' : 'none';
-            document.querySelector('.fire-btn').style.display = pole2Distance <= ACTIVATION_RADIUS ? 'block' : 'none';
-            
+            const pole3Distance = calculateDistance(userLat, userLon, TARGET3_LAT, TARGET3_LON);
+            const pole4Distance = calculateDistance(userLat, userLon, TARGET4_LAT, TARGET4_LON);
+            <!-- const pole5Distance = calculateDistance(userLat, userLon, TARGET5_LAT, TARGET5_LON); -->
+            if (pole1Distance <= ACTIVATION_RADIUS) {
+                document.querySelector('.mini-game-buttons').style.display = 'grid';
+                document.querySelector('.water-btn').style.display = 'block';
+            }
+            if (pole2Distance <= ACTIVATION_RADIUS) {
+                document.querySelector('.fire-btn').style.display = 'block';
+            }
+            if (pole3Distance <= ACTIVATION_RADIUS) {
+                document.querySelector('.earth-btn').style.display = 'block';
+            }
+            if (pole4Distance <= ACTIVATION_RADIUS) {
+                document.querySelector('.wind-btn').style.display = 'block';
+            }
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -437,7 +455,7 @@
             const exitY = 8;
             if (player.x >= exitX + 0.2 && player.x <= exitX + 0.8 &&
                 player.y >= exitY + 0.2 && player.y <= exitY + 0.8) {
-                document.getElementById('gameResult').textContent = "Successfully obtained water energy!";
+                document.getElementById('gameResult').textContent = "Successfully obtain water energy!";
                 setTimeout(() => {
                     document.getElementById('mazeGame').style.display = 'none';
                     unlockWaterEnergy();
@@ -449,6 +467,7 @@
         function unlockWaterEnergy() {
             document.querySelector('.water-btn').disabled = true;
             document.querySelector('.water-icon').classList.add('active');
+            document.getElementById('clue2').style.display = 'block';  //解谜水系迷宫后解锁第二个灯杆位置
         }
 
         document.querySelector('.water-btn').addEventListener('click', () => {
