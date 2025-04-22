@@ -39,17 +39,6 @@
             font-size: 1.2rem;
         }
 
-        .water-glow {
-            animation: waterGlow 1.5s ease-in-out infinite;
-            position: relative;
-        }
-
-        @keyframes waterGlow {
-            0% { box-shadow: 0 0 10px rgba(173, 216, 230, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(173, 216, 230, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(173, 216, 230, 0.5); }
-        }
-
         body {
             font-family: 'Arial Rounded MT Bold', sans-serif;
             margin: 0;
@@ -78,7 +67,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 100%;
         }
 
         .energy-container {
@@ -139,33 +127,10 @@
             filter: grayscale(100%) opacity(60%);
             transition: filter 0.3s ease;
             padding: 5px;
-            position: relative;
         }
 
         .energy-icon.active {
             filter: none !important;
-            animation: pulse 1s ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* 给获取到水能的图标外围添加细微光环特效 */
-        .energy-icon.active::after {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border: 2px solid rgba(173, 216, 230, 0.8);
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(173, 216, 230, 0.7);
-            pointer-events: none;
-            animation: waterGlow 1.5s ease-in-out infinite;
         }
 
         .game-map {
@@ -359,14 +324,14 @@
             const userLat = position.coords.latitude;
             const userLon = position.coords.longitude;
             
-            // 检查木质桌椅区域
+            // 检查木质桌椅区
             const tableDistance = calculateDistance(userLat, userLon, TARGET_LAT, TARGET_LON);
             if (tableDistance <= ACTIVATION_RADIUS) {
                 document.querySelector('.clues-container').style.display = 'block';
                 document.getElementById('clue1').style.display = 'block';
             }
 
-            // 检查第一个灯杆区域
+            // 检查第一灯杆区
             const poleDistance = calculateDistance(userLat, userLon, TARGET1_LAT, TARGET1_LON);
             if (poleDistance <= ACTIVATION_RADIUS) {
                 document.querySelector('.mini-game-buttons').style.display = 'grid';
@@ -412,7 +377,7 @@
             const now = Date.now();
             if (now - lastUpdate < 30) return; // 提高更新频率
             
-            const dx = gamma * 0.03;  // 降低灵敏度
+            const dx = gamma * 0.03;  // 降灵敏度
             const dy = beta * 0.03;
 
             const newX = player.x + dx;
