@@ -254,8 +254,11 @@
 
     <div class="jigsaw-fire">
        <h3>Please complete the puzzle to activate fire clean energy</h3>
+       <button class="fire-close-btn" onclick="closeFirePuzzle()">Close the puzzle after completion.</button>
        <iframe src="https://www.jigsawplanet.com/alylh15?rc=uplay&amp;view=iframe&amp;bgcolor=0x23d1b4" style="width:100%;height:600px" frameborder="0" allowfullscreen></iframe>
     </div>
+
+    
 
     <h2 class="section-title">Game map</h2>
     <img src="game-map.jpg" class="game-map" alt="Game Area Map">
@@ -508,18 +511,12 @@
             document.querySelector('.jigsaw-fire').style.display = 'block';
         });
       
-        // 监听来自拼图网站的消息
-        window.addEventListener('message', function(e) {
-            // 确保消息来自jigsawplanet
-            if (e.origin !== 'https://www.jigsawplanet.com/alylh15?rc=uplay&amp;view=iframe&amp;bgcolor=0x23d1b4') return;
-            // 检测包含"Congratulations"的字符串
-            if (typeof e.data === 'string' && e.data.includes('Congratulations')) {
-                document.querySelector('.jigsaw-fire').style.display = 'none';
-                document.querySelector('.fire-btn').disabled = true;
-                document.querySelector('.fire-icon').classList.add('active');
-                document.getElementById('clue3').style.display = 'block';
-            }
-        });
+        function closeFirePuzzle() {
+            document.querySelector('.jigsaw-fire').style.display = 'none';
+            document.querySelector('.fire-btn').disabled = true;
+            document.querySelector('.fire-icon').classList.add('active');
+            document.getElementById('clue3').style.display = 'block';
+        }
 
         window.onclick = function(event) {
             if (event.target === document.getElementById('instructionModal')) {
