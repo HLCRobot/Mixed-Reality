@@ -5,38 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eco Restorer</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tank.css">
+    <link rel="stylesheet" href="maze.css">
     <style>
         
-        #mazeGame {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-        }
-
-        #mazeContainer {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 50px auto;
-            background: #f0f8ff;
-            border-radius: 8px;
-        }
-
-        #mazeCanvas {
-            border-radius: 6px;
-        }
-
-        .game-info {
-            color: white;
-            text-align: center;
-            margin: 15px 0;
-            font-size: 1.2rem;
-        }
+        
 
         body {
             font-family: 'Arial Rounded MT Bold', sans-serif;
@@ -113,7 +86,6 @@
         .mini-game-btn:hover {
             transform: scale(1.03);
         }
-
 
         .energy-slot {
             background: #ffffff;
@@ -258,8 +230,6 @@
        <iframe src="https://www.jigsawplanet.com/alylh15?rc=uplay&amp;view=iframe&amp;bgcolor=0x23d1b4" style="width:100%;height:600px" frameborder="0" allowfullscreen></iframe>
     </div>
 
-    
-
     <h2 class="section-title">Game map</h2>
     <img src="game-map.jpg" class="game-map" alt="Game Area Map">
 
@@ -291,6 +261,11 @@
         <div class="game-info" id="gameResult"></div>
     </div>
 
+    <div id="tankGame">
+        <div id="tankContainer"></div>
+    </div>
+    
+
     <script>
         const TARGET_LAT = 52.954928;
         const TARGET_LON = -1.190927;
@@ -307,8 +282,8 @@
         const ACTIVATION_RADIUS = 5; // 5米范围
         let watchId = null;
 
-        // 迷宫游戏逻辑
-        let maze = [
+        
+        <!-- let maze = [
             [1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,1,0,0,0,0,1],
             [1,1,1,0,1,0,1,1,0,1],
@@ -322,7 +297,7 @@
         ];
         let player = { x: 1.5, y: 1.5, size: 12 };
         let lastUpdate = 0;
-        const CELL_SIZE = 30;
+        const CELL_SIZE = 30; -->
 
         function showInstruction() {
             document.getElementById('instructionModal').style.display = "block";
@@ -388,7 +363,7 @@
             return R * c;
         }
 
-        function initMaze() {
+        <!-- function initMaze() {
             const canvas = document.getElementById('mazeCanvas');
             const ctx = canvas.getContext('2d');
             
@@ -405,9 +380,9 @@
             // 绘制出口（左下角）
             ctx.fillStyle = '#8ac6d1';
             ctx.fillRect(1 * CELL_SIZE, 8 * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        }
+        } -->
 
-        function updatePosition(beta, gamma) {
+        <!-- function updatePosition(beta, gamma) {
             const now = Date.now();
             if (now - lastUpdate < 30) return; // 提高更新频率
             
@@ -426,9 +401,9 @@
             drawPlayer();
             checkExit();
             lastUpdate = now;
-        }
+        } -->
 
-        function checkCollision(x, y) {
+        <!-- function checkCollision(x, y) {
             // 精确到像素级的碰撞检测
             const radius = player.size / 2;
             const checkPoints = [
@@ -443,9 +418,9 @@
                 const cellY = Math.floor(py);
                 return maze[cellY][cellX] === 1;
             });
-        }
+        } -->
 
-        function drawPlayer() {
+        <!-- function drawPlayer() {
             const canvas = document.getElementById('mazeCanvas');
             const ctx = canvas.getContext('2d');
             
@@ -461,9 +436,9 @@
             );
             ctx.fillStyle = 'rgba(173, 216, 230, 0.8)';
             ctx.fill();
-        }
+        } -->
 
-        function checkExit() {
+        <!-- function checkExit() {
             // 精确的出口检测
             const exitX = 1;
             const exitY = 8;
@@ -476,15 +451,15 @@
                     window.removeEventListener('deviceorientation', updatePosition);
                 }, 500);
             }
-        }
+        } -->
 
-        function unlockWaterEnergy() {
+        <!-- function unlockWaterEnergy() {
             document.querySelector('.water-btn').disabled = true;
             document.querySelector('.water-icon').classList.add('active');
             document.getElementById('clue2').style.display = 'block';  //解谜水系迷宫后解锁第二个灯杆位置
-        }
+        } -->
 
-        document.querySelector('.water-btn').addEventListener('click', () => {
+        <!-- document.querySelector('.water-btn').addEventListener('click', () => {
             document.getElementById('mazeGame').style.display = 'block';
             player = { x: 1.5, y: 1.5, size: 12 }; // 重置玩家位置
             initMaze();
@@ -505,7 +480,7 @@
                     updatePosition(e.beta, e.gamma);
                 });
             }
-        });
+        }); -->
 
         document.querySelector('.fire-btn').addEventListener('click', function() {
             document.querySelector('.jigsaw-fire').style.display = 'block';
@@ -518,11 +493,18 @@
             document.getElementById('clue3').style.display = 'block';
         }
 
+        document.querySelector('.earth-btn').addEventListener('click', function() {
+            startTankGame();
+        });
+
         window.onclick = function(event) {
             if (event.target === document.getElementById('instructionModal')) {
                 closeModal();
             }
         }
     </script>
+    <script src="maze.js"></script>
+    <script src="tank.js"></script>
+
 </body>
 </html>
