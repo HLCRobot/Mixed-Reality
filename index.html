@@ -511,7 +511,7 @@
         // 监听来自拼图网站的消息
         window.addEventListener('message', function(e) {
             // 确保消息来自jigsawplanet
-            if (e.origin !== 'https://www.jigsawplanet.com/?rc=play&view=iframe&bgcolor=0x23d1b4&pid=0a2c25e75eac') return;
+            if (e.origin !== 'https://www.jigsawplanet.com/alylh15?rc=uplay&amp;view=iframe&amp;bgcolor=0x23d1b4') return;
             // 检测包含"Congratulations"的字符串
             if (typeof e.data === 'string' && e.data.includes('Congratulations')) {
                 document.querySelector('.jigsaw-fire').style.display = 'none';
