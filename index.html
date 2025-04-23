@@ -517,6 +517,7 @@
             // 检测包含"Congratulations"的字符串
             if (typeof e.data === 'string' && e.data.includes('Congratulations')) {
                 document.querySelector('.jigsaw-fire').style.display = 'none';
+                document.querySelector('.fire-btn').disabled = true;
                 document.querySelector('.fire-icon').classList.add('active');
                 document.getElementById('clue3').style.display = 'block';
             }
