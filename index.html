@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eco Restorer</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="tank.css">
     <link rel="stylesheet" href="maze.css">
+    <link rel="stylesheet" href="earth-quiz.css">
     <style>
         
-        
-
         body {
             font-family: 'Arial Rounded MT Bold', sans-serif;
             margin: 0;
@@ -261,10 +259,22 @@
         <div class="game-info" id="gameResult"></div>
     </div>
 
-    <div id="tankGame">
-        <div id="tankContainer"></div>
+    <div id="earthQuizModal" class="quiz-modal">
+        <div class="quiz-content">
+            <h3 class="quiz-title">Please answer multiple-choice questions to obtain earth clean energy.</h3>
+            <h3 class="quiz-phase" id="quizPhase">Construction Phase: Land Development</h3>
+            <img id="quizImage" src="construction.jpg" class="quiz-image">
+            <h3 class="quiz-question" id="quizQuestion"></h3>
+            <div class="quiz-options">
+                <button class="quiz-option" data-index="0"></button>
+                <button class="quiz-option" data-index="1"></button>
+                <button class="quiz-option" data-index="2"></button>
+                <button class="quiz-option" data-index="3"></button>
+            </div>
+            <h3 class="quiz-explanation" id="quizExplanation"></h3>
+            <button id="quizNext" class="quiz-next">Next</button>
+        </div>
     </div>
-    
 
     <script>
         const TARGET_LAT = 52.954928;
@@ -347,7 +357,6 @@
             return R * c;
         }
 
-
         document.querySelector('.fire-btn').addEventListener('click', function() {
             document.querySelector('.jigsaw-fire').style.display = 'block';
         });
@@ -359,8 +368,9 @@
             document.getElementById('clue3').style.display = 'block';
         }
 
-        document.querySelector('.earth-btn').addEventListener('click', function() {
-            startTankGame();
+        document.querySelector('.earth-btn').addEventListener('click', () => {
+            document.getElementById('earthQuizModal').style.display = 'block';
+            initializeQuiz();
         });
 
         window.onclick = function(event) {
@@ -370,7 +380,7 @@
         }
     </script>
     <script src="maze.js"></script>
-    <script src="tank.js"></script>
+    <script src="earth-quiz.js"></script>
 
 </body>
 </html>
