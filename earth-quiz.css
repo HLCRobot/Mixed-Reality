@@ -21,7 +21,7 @@
 
 .quiz-phase {
     color: #cd853f;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     margin: 15px 0;
 }
 
@@ -37,6 +37,7 @@
 .quiz-question {
     color: #1b5e20;
     margin: 20px 0;
+    font-size: 0.9rem;
 }
 
 .quiz-options {
