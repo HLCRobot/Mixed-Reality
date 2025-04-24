@@ -1,0 +1,75 @@
+/* 风系游戏模态框样式 */
+.wind-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+}
+
+.wind-content {
+    position: relative;
+    background: white;
+    margin: 15vh auto;
+    padding: 25px;
+    width: 85%;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.wind-progress-container {
+    height: 30px;
+    background: #f0f0f0;
+    border-radius: 15px;
+    margin: 20px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+#windProgress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+    transition: width 0.3s ease;
+}
+
+.wind-particle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #a8edea;
+    border-radius: 50%;
+    animation: float 3s infinite;
+    opacity: 0.7;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.blow-btn {
+    padding: 12px 30px;
+    background: #006400;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-top: 15px;
+}
+
+.blow-btn:hover {
+    transform: scale(1.05);
+}
+
+.success-message {
+    color: #008000;
+    font-weight: bold;
+    margin-top: 15px;
+    display: none;
+}
