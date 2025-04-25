@@ -106,12 +106,9 @@ export function initGrassPurification() {
     }
 }
 
-function checkAllEnergiesActive() {
-    const energyIcons = document.querySelectorAll('.energy-icon');
-    return Array.from(energyIcons).every(icon => icon.classList.contains('active'));
-}
+
 
 function isInGrassArea() {
     // 实际实现需结合地理位置检测
-    return true; // 测试用
+    return calculateDistance(position.coords.latitude, position.coords.longitude, TARGET5_LAT, TARGET5_LON) <= ACTIVATION_RADIUS;; // 测试用
 }
