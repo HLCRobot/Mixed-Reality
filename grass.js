@@ -1,5 +1,4 @@
 // grass.js
-let currentPurificationStep = 0;
 const purificationSteps = [
     { 
         image: 'grassland1.jpg',
@@ -27,88 +26,75 @@ const purificationSteps = [
     }
 ];
 
-function showPurificationInterface() {
-    const container = document.createElement('div');
-    container.className = 'purification-interface';
-    
-    // 创建界面元素
-    const title = document.createElement('h4');
-    title.textContent = 'Please purify the grassland with four clean energy sources';
-    
-    const imgContainer = document.createElement('div');
-    imgContainer.style.position = 'relative';
-    const image = document.createElement('img');
-    image.className = 'grassland-image';
-    
-    const effectOverlay = document.createElement('div');
-    effectOverlay.className = 'effect-overlay';
-    
-    const button = document.createElement('button');
-    button.className = 'purification-button';
-    
-    // 初始化第一屏
-    updatePurificationUI(container, imgContainer, image, effectOverlay, button);
-    
-    // 组装元素
-    imgContainer.appendChild(image);
-    imgContainer.appendChild(effectOverlay);
-    container.appendChild(title);
-    container.appendChild(imgContainer);
-    container.appendChild(button);
-    
-    document.body.appendChild(container);
-    
-    // 按钮点击处理
-    button.addEventListener('click', () => handlePurificationStep(container, imgContainer, image, effectOverlay, button));
-}
-
-function updatePurificationUI(container, imgContainer, image, effectOverlay, button) {
-    const step = purificationSteps[currentPurificationStep];
-    
-    image.src = step.image;
-    button.textContent = step.button.text;
-    button.style.backgroundColor = step.button.color;
-    
-    if(step.button.color === '#ffffff') {
-        button.style.color = '#000000';
-        button.style.border = '1px solid #000';
-    } else {
-        button.style.color = '#ffffff';
-    }
-}
-
-function handlePurificationStep(container, imgContainer, image, effectOverlay, button) {
-    if(currentPurificationStep >= 4) {
-        container.remove();
-        document.getElementById('finalRitualBtn').style.display = 'block';
-        return;
+class PurificationProcess {
+    constructor() {
+        this.currentStep = 0;
+        this.container = null;
     }
 
-    // 应用特效
-    const effectClass = purificationSteps[currentPurificationStep].effect + '-effect';
-    effectOverlay.classList.add(effectClass);
-    
-    // 特效结束后更新界面
-    setTimeout(() => {
-        effectOverlay.classList.remove(effectClass);
-        currentPurificationStep++;
+    init() {
+        this.createInterface();
+        document.body.appendChild(this.container);
+    }
+
+    createInterface() {
+        this.container = document.createElement('div');
+        this.container.className = 'purification-interface';
         
-        if(currentPurificationStep < 5) {
-            updatePurificationUI(container, imgContainer, image, effectOverlay, button);
-        }
-    }, 1500);
-}
+        const title = document.createElement('h4');
+        title.textContent = 'Please purify the grassland with four clean energy sources';
+        
+        this.imgContainer = document.createElement('div');
+        this.imgContainer.style.position = 'relative';
+        
+        this.image = document.createElement('img');
+        this.image.className = 'grassland-image';
+        
+        this.effectOverlay = document.createElement('div');
+        this.effectOverlay.className = 'effect-overlay';
+        
+        this.button = document.createElement('button');
+        this.button.className = 'purification-button';
+        
+        this.updateUI();
+        
+        this.imgContainer.append(this.image, this.effectOverlay);
+        this.container.append(title, this.imgContainer, this.button);
+        
+        this.button.addEventListener('click', () => this.handleStep());
+    }
 
-// 暴露接口给主程序
-export function initGrassPurification() {
-    if(checkAllEnergiesActive() && isInGrassArea()) {
-        showPurificationInterface();
+    updateUI() {
+        const step = purificationSteps[this.currentStep];
+        this.image.src = step.image;
+        this.button.textContent = step.button.text;
+        this.button.style.backgroundColor = step.button.color;
+        
+        if(step.button.color === '#ffffff') {
+            this.button.classList.add('return-btn');
+        } else {
+            this.button.classList.remove('return-btn');
+        }
+    }
+
+    handleStep() {
+        if(this.currentStep >= 4) {
+            this.container.remove();
+            document.getElementById('finalRitualBtn').style.display = 'block';
+            return;
+        }
+
+        const effectClass = purificationSteps[this.currentStep].effect + '-effect';
+        this.effectOverlay.classList.add(effectClass);
+        
+        setTimeout(() => {
+            this.effectOverlay.classList.remove(effectClass);
+            this.currentStep++;
+            this.updateUI();
+        }, 1500);
     }
 }
 
-
-
-function isInGrassArea() {
-    // 实际实现需结合地理位置检测
-    return calculateDistance(position.coords.latitude, position.coords.longitude, TARGET5_LAT, TARGET5_LON) <= ACTIVATION_RADIUS;; // 测试用
+export function initGrassPurification() {
+    new PurificationProcess().init();
 }
