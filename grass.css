@@ -100,3 +100,78 @@
 .purification-interface {
     animation: elementAppear 0.5s ease-out;
 }
+
+/* grass.css 新增内容 */
+#purificationModal .purification-content {
+    position: relative;
+    background: white;
+    margin: 10vh auto;
+    padding: 25px;
+    width: 85%;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#purificationModal .purification-title {
+    color: #1b5e20;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+#purificationModal .image-container {
+    position: relative;
+    margin: 15px 0;
+}
+
+#purificationModal .grassland-image {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+#purificationModal .purification-button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    transition: all 0.3s;
+    margin-top: 15px;
+}
+
+/* 按钮颜色 */
+#purificationModal #purificationAction {
+    background-color: #ff4500;
+    color: white;
+    border: none;
+}
+
+#purificationModal #purificationAction.return-btn {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #333 !important;
+}
+
+/* 特效覆盖层 */
+#effectOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* 特效动画 */
+.fire-active #effectOverlay {
+    animation: flame 1.5s ease-out;
+}
+.wind-active #effectOverlay {
+    animation: whirlwind 1.5s linear;
+}
+.earth-active #effectOverlay {
+    animation: sparkle 1.5s ease-in-out;
+}
+.water-active #effectOverlay {
+    animation: waterFlow 1.5s ease-in;
+}
