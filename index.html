@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="maze.css">
     <link rel="stylesheet" href="earth-quiz.css">
     <link rel="stylesheet" href="wind-game.css">
+    <link rel="stylesheet" href="grass.css">
     <style>
         
         body {
@@ -223,6 +224,8 @@
         <button class="mini-game-btn wind-btn">wind</button>
     </div>
 
+    <button id="finalRitualBtn" style="display:none; background:#006400;color:white;padding:15px;border-radius:8px;margin:10px auto;">Begin the final purification ritual</button>
+
     <div class="jigsaw-fire">
        <h3>Please complete the puzzle to activate fire clean energy</h3>
        <button class="fire-close-btn" onclick="closeFirePuzzle()">Close the puzzle after completion.</button>
@@ -278,13 +281,14 @@
     </div>
 
     <script>
+        import { initGrassPurification } from './grass.js';
         const TARGET_LAT = 52.954928;
         const TARGET_LON = -1.190927;
         const TARGET1_LAT = 52.955028;  
         const TARGET1_LON = -1.190765;
-        const TARGET2_LAT = 52.955012;  // 第二个灯杆坐标
+        const TARGET2_LAT = 52.955012;  
         const TARGET2_LON = -1.190509;
-        const TARGET3_LAT = 52.954965; // 第三个灯杆坐标
+        const TARGET3_LAT = 52.954965; 
         const TARGET3_LON = -1.190255;
         const TARGET4_LAT = 52.954898; // 第四个灯杆坐标
         const TARGET4_LON = -1.190010;
@@ -292,7 +296,6 @@
         const TARGET5_LON = -1.189828;
         const ACTIVATION_RADIUS = 5; // 5米范围
         let watchId = null;
-
 
         function showInstruction() {
             document.getElementById('instructionModal').style.display = "block";
@@ -327,7 +330,7 @@
             const pole2Distance = calculateDistance(userLat, userLon, TARGET2_LAT, TARGET2_LON);
             const pole3Distance = calculateDistance(userLat, userLon, TARGET3_LAT, TARGET3_LON);
             const pole4Distance = calculateDistance(userLat, userLon, TARGET4_LAT, TARGET4_LON);
-            <!-- const pole5Distance = calculateDistance(userLat, userLon, TARGET5_LAT, TARGET5_LON); -->
+            const grassDistance = calculateDistance(userLat, userLon, TARGET5_LAT, TARGET5_LON);
             if (pole1Distance <= ACTIVATION_RADIUS) {
                 document.querySelector('.mini-game-buttons').style.display = 'grid';
                 document.querySelector('.water-btn').style.display = 'block';
@@ -341,6 +344,14 @@
             if (pole4Distance <= ACTIVATION_RADIUS) {
                 document.querySelector('.wind-btn').style.display = 'block';
             }
+            if (grassDistance <= ACTIVATION_RADIUS && checkAllEnergiesActive()) {
+                showPurificationInterface();
+            }
+        }
+
+        function checkAllEnergiesActive() {
+            const energyIcons = document.querySelectorAll('.energy-icon');
+            return Array.from(energyIcons).every(icon => icon.classList.contains('active'));
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
