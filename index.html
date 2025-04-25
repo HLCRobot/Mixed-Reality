@@ -280,8 +280,8 @@
         </div>
     </div>
 
-    <script>
-        
+    <script type="module">
+        import { initGrassPurification } from './grass.js';
         const TARGET_LAT = 52.954928;
         const TARGET_LON = -1.190927;
         const TARGET1_LAT = 52.955028;  
@@ -345,13 +345,14 @@
                 document.querySelector('.wind-btn').style.display = 'block';
             }
             if (grassDistance <= ACTIVATION_RADIUS && checkAllEnergiesActive()) {
-                showPurificationInterface();
+                initGrassPurification();
             }
         }
 
+        // 在index.html的script部分添加
         function checkAllEnergiesActive() {
-            const energyIcons = document.querySelectorAll('.energy-icon');
-            return Array.from(energyIcons).every(icon => icon.classList.contains('active'));
+            return Array.from(document.querySelectorAll('.energy-icon'))
+                .every(icon => icon.classList.contains('active'));
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
