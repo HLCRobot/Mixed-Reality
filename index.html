@@ -198,6 +198,14 @@
             line-height: 1.4;
             display: none;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        #mapToggle {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -233,8 +241,8 @@
        <iframe src="https://www.jigsawplanet.com/alylh15?rc=uplay&amp;view=iframe&amp;bgcolor=0x23d1b4" style="width:100%;height:600px" frameborder="0" allowfullscreen></iframe>
     </div>
 
-    <h2 class="section-title">Game map</h2>
-    <img src="game-map.jpg" class="game-map" alt="Game Area Map">
+    <button id="mapToggle" class="start-button">Game map(on)</button>
+    <img id="gameMapImage" src="game-map.jpg" class="game-map" alt="Game Area Map">
 
     <div class="clues-container">
         <p id="clue1" class="clue">Clue 1: The first clean energy is located at the lamppost closest to the trash disposal area.</p>
@@ -308,7 +316,11 @@
     </div>
 
     <script>
-        
+        document.getElementById('mapToggle').addEventListener('click', function() {
+            const mapImage = document.getElementById('gameMapImage');
+            mapImage.classList.toggle('hidden');
+            this.textContent = mapImage.classList.contains('hidden') ? 'Game map(off)' : 'Game map(on)';
+        });
         const TARGET_LAT = 52.954928;
         const TARGET_LON = -1.190927;
         const TARGET1_LAT = 52.955028;  
