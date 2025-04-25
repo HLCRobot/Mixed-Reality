@@ -3,25 +3,21 @@ const purificationSteps = [
     { 
         image: 'grassland1.jpg',
         action: 'incinerate',
-        effect: 'fire',
         color: '#ff4500'
     },
     {
         image: 'grassland2.jpg',
         action: 'blow',
-        effect: 'wind',
         color: '#006400'
     },
     {
         image: 'grassland3.jpg', 
         action: 'activate',
-        effect: 'earth',
         color: '#cd853f'
     },
     {
         image: 'grassland4.jpg',
         action: 'irrigate',
-        effect: 'water',
         color: '#1b5e20'
     },
     {
@@ -32,7 +28,6 @@ const purificationSteps = [
 ];
 
 let currentStep = 0;
-let isAnimating = false;
 
 function updatePurificationUI() {
     const step = purificationSteps[currentStep];
@@ -50,34 +45,16 @@ function updatePurificationUI() {
     }
 }
 
-function playEffect(effectType) {
-    const overlay = document.getElementById('effectOverlay');
-    overlay.style.opacity = 1;
-    document.getElementById('purificationModal').classList.add(`${effectType}-active`);
-    
-    setTimeout(() => {
-        overlay.style.opacity = 0;
-        document.getElementById('purificationModal').classList.remove(`${effectType}-active`);
-        isAnimating = false;
-    }, 3000);
-}
-
 function handlePurificationAction() {
-    if(isAnimating) return;
-    
     if(currentStep >= 4) {
         document.getElementById('purificationModal').style.display = 'none';
         document.getElementById('finalRitualBtn').style.display = 'block';
+        currentStep = 0;
         return;
     }
 
-    isAnimating = true;
-    playEffect(purificationSteps[currentStep].effect);
-    
-    setTimeout(() => {
-        currentStep++;
-        updatePurificationUI();
-    }, 3000);
+    currentStep++;
+    updatePurificationUI();
 }
 
 window.initGrassPurification = function() {
@@ -88,4 +65,3 @@ window.initGrassPurification = function() {
     document.getElementById('purificationModal').style.display = 'block';
     document.getElementById('purificationAction').onclick = handlePurificationAction;
 }
-
