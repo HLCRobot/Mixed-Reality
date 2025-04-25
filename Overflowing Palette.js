@@ -1,6 +1,6 @@
 // Overflowing Palette.js
 let selectedColor = null;
-let stepsLeft = 5;
+
 let grid = [];
 const COLOR_MAP = {
     blue: '#2196F3',
@@ -36,7 +36,6 @@ function createGrid() {
     const container = document.querySelector('.grid-container');
     container.innerHTML = '';
     grid = [];
-    stepsLeft = 5;
     
     for(let i = 0; i < 36; i++) {
         const cell = document.createElement('div');
@@ -52,7 +51,7 @@ function createGrid() {
 }
 
 function handleCellClick(index) {
-    if (!selectedColor || stepsLeft <= 0) return;
+    if (!selectedColor) return;
     
     const targetColor = grid[index];
     if (targetColor === COLOR_MAP[selectedColor]) return;
@@ -79,13 +78,7 @@ function handleCellClick(index) {
         if (col < 5) queue.push(row*6 + (col+1));
     }
     
-    stepsLeft--;
-    updateSteps();
     checkWinCondition();
-}
-
-function updateSteps() {
-    document.getElementById('stepCounter').textContent = `Steps left: ${stepsLeft}`;
 }
 
 function checkWinCondition() {
@@ -95,7 +88,7 @@ function checkWinCondition() {
             document.querySelectorAll('.grid-cell').forEach(cell => {
                 cell.style.backgroundColor = '#2e7d32';
             });
-            alert('Purification Complete!');
+            alert('Purification Complete! You successfully restore the abandoned parking lot!');
             document.getElementById('overflowingPaletteModal').style.display = 'none';
         }, 500);
     }
