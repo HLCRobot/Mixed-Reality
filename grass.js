@@ -1,4 +1,6 @@
 // grass.js
+let isPurificationActive = false;
+
 const purificationSteps = [
     { 
         image: 'grassland1.jpg',
@@ -49,6 +51,7 @@ function handlePurificationAction() {
     if(currentStep >= 4) {
         document.getElementById('purificationModal').style.display = 'none';
         document.getElementById('finalRitualBtn').style.display = 'block';
+        isPurificationActive = false; // 重置状态
         currentStep = 0;
         return;
     }
@@ -58,7 +61,8 @@ function handlePurificationAction() {
 }
 
 window.initGrassPurification = function() {
-    if(!checkAllEnergiesActive()) return;
+    if(!checkAllEnergiesActive() || isPurificationActive) return;
+    isPurificationActive = true; // 设置流程激活状态
     
     currentStep = 0;
     updatePurificationUI();
