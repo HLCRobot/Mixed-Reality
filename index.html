@@ -310,7 +310,7 @@
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(
                     position => checkPosition(position),
-                    error => console.error('定位错误:', error),
+                    error => console.error('Positioning error:', error),
                     { enableHighAccuracy: true, maximumAge: 10000 }
                 );
             }
@@ -390,11 +390,18 @@
                 closeModal();
             }
         }
+
+        function showPurificationInterface() {
+            if(typeof initGrassPurification === 'function') {
+              initGrassPurification();
+            }
+          }
+
     </script>
     <script src="maze.js"></script>
     <script src="earth-quiz.js"></script>
     <script src="wind-game.js"></script>
-    <script src="grass.js"></script>
+    <script type="module" src="grass.js"></script>
 
 </body>
 </html>
