@@ -95,6 +95,7 @@ class PurificationProcess {
     }
 }
 
-export function initGrassPurification() {
+// 将初始化方法暴露到全局
+window.initGrassPurification = function() {
     new PurificationProcess().init();
 }
