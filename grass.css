@@ -34,6 +34,13 @@
     text-transform: uppercase;
 }
 
+/* grass.css 新增部分 */
+.purification-button.return-btn {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #000 !important;
+}
+
 .purification-button:hover {
     transform: scale(1.05);
 }
@@ -82,4 +89,14 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
+}
+
+/* grass.css 新增动画效果 */
+@keyframes elementAppear {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.purification-interface {
+    animation: elementAppear 0.5s ease-out;
 }
