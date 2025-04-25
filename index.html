@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="earth-quiz.css">
     <link rel="stylesheet" href="wind-game.css">
     <link rel="stylesheet" href="grass.css">
+    <link rel="stylesheet" href="Overflowing Palette.css">
     <style>
         
         body {
@@ -33,7 +34,7 @@
         .section-title {
             text-align: center;
             margin: 0 0 15px;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
             background-image: linear-gradient(to right, #1b1bd5, #ff0000, #ffff00, #008000);
             -webkit-background-clip: text;
@@ -78,10 +79,10 @@
             transition: transform 0.2s;
         }
 
-        .water-btn { background-color: lightblue; }
+        .water-btn { background-color: rgb(100, 195, 226); }
         .fire-btn { background-color: #ff4500; }
         .earth-btn { background-color: #cd853f; }
-        .wind-btn { background-color: #006400; }
+        .wind-btn { background-color: #59b259; }
 
         .mini-game-btn:hover {
             transform: scale(1.03);
@@ -290,6 +291,22 @@
         </div>
     </div>
 
+    <div id="overflowingPaletteModal" class="modal">
+        <div class="palette-content">
+            <button id="instructionsBtn">Game Instructions</button>
+            <p id="gameplayText">Gameplay: After selecting a color, the player clicks on a block area, and all connected blocks of the same color in that region will be simultaneously dyed to the target color. The player must unify the entire board into one color (green) within a step limit (e.g., 3-5 steps).</p>
+            <div class="step-counter" id="stepCounter"></div>
+            <div class="grid-container"></div>
+            <div class="color-selector">
+                <button id="resetBtn">reset</button>
+                <button class="color-btn" data-color="blue" style="background: #2196F3"></button>
+                <button class="color-btn" data-color="red" style="background: #F44336"></button>
+                <button class="color-btn" data-color="yellow" style="background: #FFEB3B"></button>
+                <button class="color-btn" data-color="green" style="background: #4CAF50"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         
         const TARGET_LAT = 52.954928;
@@ -406,6 +423,7 @@
     <script src="earth-quiz.js"></script>
     <script src="wind-game.js"></script>
     <script src="grass.js"></script>
+    <script src="Overflowing Palette.js"></script>
 
 </body>
 </html>
