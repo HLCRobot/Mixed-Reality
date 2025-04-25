@@ -40,9 +40,10 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, 30px); /* 减小列宽为30px */
     gap: 3px;
     margin: 15px 0;
+    justify-content: center; /* 新增居中显示 */
 }
 
 .grid-cell {
@@ -50,6 +51,8 @@
     border-radius: 4px;
     transition: background-color 0.3s ease;
     cursor: pointer;
+    width: 30px; /* 新增固定宽度 */
+    height: 30px; /* 新增固定高度 */
 }
 
 .color-selector {
