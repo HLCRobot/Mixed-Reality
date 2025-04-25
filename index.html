@@ -280,8 +280,8 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initGrassPurification } from './grass.js';
+    <script>
+        
         const TARGET_LAT = 52.954928;
         const TARGET_LON = -1.190927;
         const TARGET1_LAT = 52.955028;  
@@ -392,17 +392,11 @@
             }
         }
 
-        function showPurificationInterface() {
-            if(typeof initGrassPurification === 'function') {
-              initGrassPurification();
-            }
-          }
-
     </script>
     <script src="maze.js"></script>
     <script src="earth-quiz.js"></script>
     <script src="wind-game.js"></script>
-    <script type="module" src="grass.js"></script>
+    <script src="grass.js"></script>
 
 </body>
 </html>
