@@ -1,107 +1,43 @@
 /* grass.css */
-.purification-interface {
+#purificationModal {
+    background: rgba(0,0,0,0.5);
+    display: none;
     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.purification-content {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    z-index: 2000 !important;
-    text-align: center;
     max-width: 90%;
 }
 
-.grassland-image {
-    width: 300px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin: 10px 0;
-    position: relative;
+.purification-title {
+    color: #1b5e20;
+    margin-bottom: 15px;
 }
 
-.purification-button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 25px;
+#purificationAction {
+    background-color: #ff4500;
     color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s;
-    margin: 10px;
-    text-transform: uppercase;
 }
 
-/* grass.css 新增部分 */
-.purification-button.return-btn {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    border: 1px solid #000 !important;
+#purificationAction.return-btn {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #333 !important;
 }
 
-.purification-button:hover {
-    transform: scale(1.05);
-}
-
-/* Effect Classes */
-.fire-effect {
-    animation: flame 1.5s ease-out;
-}
-
-.wind-effect {
-    animation: whirlwind 1.5s linear;
-}
-
-.earth-effect {
-    animation: sparkle 1.5s ease-in-out;
-}
-
-.water-effect {
-    animation: waterFlow 1.5s ease-in;
-}
-
-@keyframes flame {
-    0% { opacity: 0; transform: scale(0); }
-    50% { opacity: 1; transform: scale(1.2); }
-    100% { opacity: 0; transform: scale(0.8); }
-}
-
-@keyframes whirlwind {
-    0% { transform: rotate(0deg) scale(0); }
-    100% { transform: rotate(720deg) scale(2); opacity: 0; }
-}
-
-@keyframes sparkle {
-    0% { box-shadow: 0 0 10px gold; }
-    50% { box-shadow: 0 0 30px gold; }
-    100% { box-shadow: 0 0 10px gold; }
-}
-
-@keyframes waterFlow {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; }
-}
-
-.effect-overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-/* grass.css 新增动画效果 */
-@keyframes elementAppear {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-.purification-interface {
-    animation: elementAppear 0.5s ease-out;
-}
-
-/* grass.css 新增内容 */
+/* 新增净化模态框样式 */
 #purificationModal .purification-content {
     position: relative;
     background: white;
@@ -111,67 +47,18 @@
     border-radius: 20px;
     text-align: center;
 }
-
-#purificationModal .purification-title {
-    color: #1b5e20;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-}
-
-#purificationModal .image-container {
-    position: relative;
-    margin: 15px 0;
-}
-
 #purificationModal .grassland-image {
     width: 100%;
     max-width: 300px;
     height: 200px;
     border-radius: 10px;
+    margin: 15px 0;
 }
-
-#purificationModal .purification-button {
+.purification-button {
     padding: 12px 24px;
     font-size: 1.1rem;
     border-radius: 25px;
     transition: all 0.3s;
-    margin-top: 15px;
-}
-
-/* 按钮颜色 */
-#purificationModal #purificationAction {
-    background-color: #ff4500;
-    color: white;
     border: none;
-}
-
-#purificationModal #purificationAction.return-btn {
-    background-color: white !important;
-    color: black !important;
-    border: 1px solid #333 !important;
-}
-
-/* 特效覆盖层 */
-#effectOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0;
-}
-
-/* 特效动画 */
-.fire-active #effectOverlay {
-    animation: flame 1.5s ease-out;
-}
-.wind-active #effectOverlay {
-    animation: whirlwind 1.5s linear;
-}
-.earth-active #effectOverlay {
-    animation: sparkle 1.5s ease-in-out;
-}
-.water-active #effectOverlay {
-    animation: waterFlow 1.5s ease-in;
+    cursor: pointer;
 }
