@@ -207,6 +207,9 @@
             margin: 10px 0;
             background: #6c6c6c !important; /* 水泥灰色 */
             background-image: none !important; /* 移除原有渐变 */
+            display: inline-block;       /* 改为行内块元素 */
+            width: auto;                /* 宽度自适应内容 */
+            padding: 12px 20px;         /* 调小内边距 */
         }
     </style>
 </head>
@@ -243,7 +246,7 @@
        <iframe src="https://www.jigsawplanet.com/alylh15?rc=uplay&amp;view=iframe&amp;bgcolor=0x23d1b4" style="width:100%;height:600px" frameborder="0" allowfullscreen></iframe>
     </div>
 
-    <button id="mapToggle" class="start-button">Game map(on)</button>
+    <button id="mapToggle" class="start-button" style="display: inline-block; width: auto; padding: 12px 20px; margin: 10px 0;">Game map(on)</button>
     <img id="gameMapImage" src="game-map.jpg" class="game-map" alt="Game Area Map">
 
     <div class="clues-container">
