@@ -2,100 +2,90 @@
 const purificationSteps = [
     { 
         image: 'grassland1.jpg',
-        button: { text: 'incinerate', color: '#ff4500' },
-        effect: 'fire'
+        action: 'incinerate',
+        effect: 'fire',
+        color: '#ff4500'
     },
     {
         image: 'grassland2.jpg',
-        button: { text: 'blow', color: '#006400' },
-        effect: 'wind'
+        action: 'blow',
+        effect: 'wind',
+        color: '#006400'
     },
     {
         image: 'grassland3.jpg', 
-        button: { text: 'activate', color: '#cd853f' },
-        effect: 'earth'
+        action: 'activate',
+        effect: 'earth',
+        color: '#cd853f'
     },
     {
         image: 'grassland4.jpg',
-        button: { text: 'irrigate', color: '#1b5e20' },
-        effect: 'water'
+        action: 'irrigate',
+        effect: 'water',
+        color: '#1b5e20'
     },
     {
         image: 'grassland5.jpg',
-        button: { text: 'return', color: '#ffffff' }
+        action: 'return',
+        color: '#ffffff'
     }
 ];
 
-class PurificationProcess {
-    constructor() {
-        this.currentStep = 0;
-        this.container = null;
-    }
+let currentStep = 0;
+let isAnimating = false;
 
-    init() {
-        this.createInterface();
-        document.body.appendChild(this.container);
-    }
-
-    createInterface() {
-        this.container = document.createElement('div');
-        this.container.className = 'purification-interface';
-        
-        const title = document.createElement('h4');
-        title.textContent = 'Please purify the grassland with four clean energy sources';
-        
-        this.imgContainer = document.createElement('div');
-        this.imgContainer.style.position = 'relative';
-        
-        this.image = document.createElement('img');
-        this.image.className = 'grassland-image';
-        
-        this.effectOverlay = document.createElement('div');
-        this.effectOverlay.className = 'effect-overlay';
-        
-        this.button = document.createElement('button');
-        this.button.className = 'purification-button';
-        
-        this.updateUI();
-        
-        this.imgContainer.append(this.image, this.effectOverlay);
-        this.container.append(title, this.imgContainer, this.button);
-        
-        this.button.addEventListener('click', () => this.handleStep());
-    }
-
-    updateUI() {
-        const step = purificationSteps[this.currentStep];
-        this.image.src = step.image;
-        this.button.textContent = step.button.text;
-        this.button.style.backgroundColor = step.button.color;
-        
-        if(step.button.color === '#ffffff') {
-            this.button.classList.add('return-btn');
-        } else {
-            this.button.classList.remove('return-btn');
-        }
-    }
-
-    handleStep() {
-        if(this.currentStep >= 4) {
-            this.container.remove();
-            document.getElementById('finalRitualBtn').style.display = 'block';
-            return;
-        }
-
-        const effectClass = purificationSteps[this.currentStep].effect + '-effect';
-        this.effectOverlay.classList.add(effectClass);
-        
-        setTimeout(() => {
-            this.effectOverlay.classList.remove(effectClass);
-            this.currentStep++;
-            this.updateUI();
-        }, 1500);
+function updatePurificationUI() {
+    const step = purificationSteps[currentStep];
+    const img = document.getElementById('purificationImage');
+    const btn = document.getElementById('purificationAction');
+    
+    img.src = step.image;
+    btn.textContent = step.action;
+    btn.style.backgroundColor = step.color;
+    
+    if(step.color === '#ffffff') {
+        btn.classList.add('return-btn');
+    } else {
+        btn.classList.remove('return-btn');
     }
 }
 
-// 将初始化方法暴露到全局
+function playEffect(effectType) {
+    const overlay = document.getElementById('effectOverlay');
+    overlay.style.opacity = 1;
+    document.getElementById('purificationModal').classList.add(`${effectType}-active`);
+    
+    setTimeout(() => {
+        overlay.style.opacity = 0;
+        document.getElementById('purificationModal').classList.remove(`${effectType}-active`);
+        isAnimating = false;
+    }, 3000);
+}
+
+function handlePurificationAction() {
+    if(isAnimating) return;
+    
+    if(currentStep >= 4) {
+        document.getElementById('purificationModal').style.display = 'none';
+        document.getElementById('finalRitualBtn').style.display = 'block';
+        return;
+    }
+
+    isAnimating = true;
+    playEffect(purificationSteps[currentStep].effect);
+    
+    setTimeout(() => {
+        currentStep++;
+        updatePurificationUI();
+    }, 3000);
+}
+
 window.initGrassPurification = function() {
-    new PurificationProcess().init();
+    if(!checkAllEnergiesActive()) return;
+    
+    currentStep = 0;
+    updatePurificationUI();
+    document.getElementById('purificationModal').style.display = 'block';
+    document.getElementById('purificationAction').onclick = handlePurificationAction;
 }
+
