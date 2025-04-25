@@ -280,6 +280,17 @@
         </div>
     </div>
 
+    <div id="purificationModal" class="modal">
+        <div class="purification-content">
+            <h4 class="purification-title">Please purify the grassland with four clean energy sources</h4>
+            <div class="image-container">
+                <img id="purificationImage" class="grassland-image" src="grassland1.jpg">
+                <div id="effectOverlay" class="effect-overlay"></div>
+            </div>
+            <button id="purificationAction" class="purification-button">incinerate</button>
+        </div>
+    </div>
+
     <script>
         
         const TARGET_LAT = 52.954928;
@@ -349,7 +360,6 @@
             }
         }
 
-        // 在index.html的script部分添加
         function checkAllEnergiesActive() {
             return Array.from(document.querySelectorAll('.energy-icon'))
                 .every(icon => icon.classList.contains('active'));
