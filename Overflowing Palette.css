@@ -40,7 +40,7 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(6, 30px); /* 减小列宽为30px */
+    grid-template-columns: repeat(6, 40px); /* 列宽为40px */
     gap: 3px;
     margin: 15px 0;
     justify-content: center; /* 新增居中显示 */
@@ -51,14 +51,15 @@
     border-radius: 4px;
     transition: background-color 0.3s ease;
     cursor: pointer;
-    width: 30px; /* 新增固定宽度 */
-    height: 30px; /* 新增固定高度 */
+    width: 40px; /* 新增固定宽度 */
+    height: 40px; /* 新增固定高度 */
 }
 
 .color-selector {
     display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
+    justify-content: flex-start;
+    margin-top: 10px;
+    gap: 5px;
 }
 
 .color-btn {
